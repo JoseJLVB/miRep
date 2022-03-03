@@ -6,7 +6,7 @@ const pool = new Pool({
     user: 'jvalcarcel',
     host: '127.0.0.1',
     database: 'repertorio',
-    password: '1005',
+    password: '1234',
     max: 20,
     min: 2,
     idleTimeoutMillis: 30000,
@@ -19,19 +19,32 @@ async function insertar(cancion, artista, tono) {
     const client = await pool.connect()
     // ejemplo de consulta con 2 parámetros
     const res = await client.query(
-      "insert into repertorio (cancion, artista, tono) values ($2, $3, $4) returning *",
+        "insert into repertorio (cancion, artista, tono) values ($2, $3, $4) returning *",
         [cancion, artista, tono]
     )
     client.release()
 }
 
 async function consultar() {
-    const client = await pool.connect()
-    const res = await client.query(
-      "select * from repertorio"
-    )
+    let client 
+    try{
+        client = await pool.connect();
+    } catch (conn_error) {
+        console.log("Client Error")
+    }
+
+    let res;
+    try{
+        res = await client.query({
+            text: `select * from repertorio`
+        });
+    } catch (err) {
+        console.log("El error es: " + err)
+        return;
+    }
+    
     client.release()
-    return res
+    return res.rows;
 }
 
 async function editar (cancion, artista, tono) {
@@ -57,4 +70,4 @@ async function eliminar (nombre) {
 }
 
 
-module.exports = { get_now, insertar, consultar, editar, eliminar, total_reps }
+module.exports = {insertar, consultar, editar, eliminar}
