@@ -19,7 +19,7 @@ async function insertar(cancion, artista, tono) {
     const client = await pool.connect()
     // ejemplo de consulta con 2 parámetros
     const res = await client.query(
-        "insert into repertorio (cancion, artista, tono) values ($2, $3, $4) returning *",
+        "insert into repertorio (cancion, artista, tono) values ($1, $2, $3) returning *",
         [cancion, artista, tono]
     )
     client.release()
