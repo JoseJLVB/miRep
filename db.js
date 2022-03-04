@@ -47,12 +47,12 @@ async function consultar() {
     return res.rows;
 }
 
-async function editar (cancion, artista, tono) {
+async function editar (id, cancion, artista, tono) {
     const client = await pool.connect()
     // ejemplo de consulta pasándole como parámetro 1 objeto
     const res = await client.query({
         text: "update repertorio set cancion=$2, artista=$3, tono=$4 where id=$1",
-        values: [ cancion, artista, tono]
+        values: [ id, cancion, artista, tono]
     })
 
     client.release()
