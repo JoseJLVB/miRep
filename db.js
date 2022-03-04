@@ -14,7 +14,6 @@ const pool = new Pool({
 })
 
 
-
 async function insertar(cancion, artista, tono) {
     const client = await pool.connect()
     // ejemplo de consulta con 2 parámetros
@@ -59,7 +58,7 @@ async function editar (id, cancion, artista, tono) {
     return res
 }
 
-async function eliminar (nombre) {
+async function eliminar (id) {
     const client = await pool.connect()
     // ejemplo de consulta con 2 parámetros
     const res = await client.query(

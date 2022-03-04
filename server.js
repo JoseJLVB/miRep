@@ -1,4 +1,4 @@
-const {consultar, insertar, editar} = require('./db.js')
+const {consultar, insertar, editar, eliminar} = require('./db.js')
 const express = require('express')
 const app = express()
 app.use(express.static('static'))
@@ -38,6 +38,11 @@ app.put('/cancion', async (req, res) => {
     res.send("Editado con Exito")
   })
 })
+
+app.delete('/cancion', async (req,res) => {
+  await eliminar(req.query.id)
+  res.send('Eliminado')
+});
 
 
 app.listen(3000, () => console.log('Servidor en puerto 3000'))
